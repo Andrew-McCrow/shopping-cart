@@ -1,9 +1,10 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
+import { useContext } from "react";
 
 // Create a CartContext to manage cart state across the application
 const CartContext = createContext();
 
-// Custom hook to access the CartContext
+// Custom hook to access cart context
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
