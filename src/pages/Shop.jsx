@@ -1,4 +1,33 @@
+import { useState } from "react";
+
 function Shop() {
+  const [quantities, setQuantities] = useState({});
+
+  // Helper functions for quantity management. Starts at 1 if not set, and ensures values stay between 1 and 99.
+  const getQuantity = (productId) => quantities[productId] || 1;
+  // Centralized function to update quantity (quantity is bounded between 1 and 99)
+  const updateQuantity = (productId, newQuantity) => {
+    if (newQuantity < 1) newQuantity = 1;
+    if (newQuantity > 99) newQuantity = 99;
+    setQuantities((prev) => ({
+      ...prev,
+      [productId]: newQuantity,
+    }));
+  };
+  // Increment function that increases quantity by 1
+  const incrementQuantity = (productId) => {
+    updateQuantity(productId, getQuantity(productId) + 1);
+  };
+  // Decrement function that decreases quantity by 1
+  const decrementQuantity = (productId) => {
+    updateQuantity(productId, getQuantity(productId) - 1);
+  };
+  // Handler for direct input changes in the quantity field
+  const handleQuantityInput = (productId, value) => {
+    const numValue = parseInt(value) || 1;
+    updateQuantity(productId, numValue);
+  };
+
   const products = [
     {
       id: 1,
@@ -6,11 +35,36 @@ function Shop() {
       price: 79.99,
       category: "Electronics",
     },
-    { id: 2, name: "Smart Watch", price: 199.99, category: "Electronics" },
-    { id: 3, name: "Laptop Bag", price: 49.99, category: "Accessories" },
-    { id: 4, name: "Wireless Mouse", price: 29.99, category: "Electronics" },
-    { id: 5, name: "USB-C Hub", price: 39.99, category: "Accessories" },
-    { id: 6, name: "Phone Case", price: 19.99, category: "Accessories" },
+    {
+      id: 2,
+      name: "Smart Watch",
+      price: 199.99,
+      category: "Electronics",
+    },
+    {
+      id: 3,
+      name: "Laptop Bag",
+      price: 49.99,
+      category: "Accessories",
+    },
+    {
+      id: 4,
+      name: "Wireless Mouse",
+      price: 29.99,
+      category: "Electronics",
+    },
+    {
+      id: 5,
+      name: "USB-C Hub",
+      price: 39.99,
+      category: "Accessories",
+    },
+    {
+      id: 6,
+      name: "Phone Case",
+      price: 19.99,
+      category: "Accessories",
+    },
   ];
 
   return (
@@ -69,8 +123,40 @@ function Shop() {
                     ))}
                   </div>
                 </div>
+
+                {/* Quantity Controls */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Quantity
+                  </label>
+                  <div className="flex items-center justify-center gap-0 bg-gray-100 rounded-xl p-1 max-w-36 mx-auto">
+                    <button
+                      onClick={() => decrementQuantity(product.id)}
+                      className="w-10 h-10 flex items-center justify-center bg-white rounded-lg shadow-sm hover:bg-gray-50 transition-colors text-gray-600 hover:text-blue-600 font-bold text-xl"
+                    >
+                      −
+                    </button>
+                    <input
+                      type="number"
+                      min="1"
+                      max="99"
+                      value={getQuantity(product.id)}
+                      onChange={(e) =>
+                        handleQuantityInput(product.id, e.target.value)
+                      }
+                      className="w-14 h-10 text-center border-0 bg-transparent font-bold text-lg text-gray-900 focus:outline-none focus:ring-0"
+                    />
+                    <button
+                      onClick={() => incrementQuantity(product.id)}
+                      className="w-10 h-10 flex items-center justify-center bg-white rounded-lg shadow-sm hover:bg-gray-50 transition-colors text-gray-600 hover:text-blue-600 font-bold text-xl"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
                 <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
-                  Add to Cart
+                  Add {getQuantity(product.id)} to Cart
                 </button>
               </div>
             </div>
