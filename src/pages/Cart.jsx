@@ -54,13 +54,13 @@ function Cart() {
                   <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-purple-100 rounded-xl flex items-center justify-center mr-6">
                     <img
                       src={item.image}
-                      alt={item.name}
+                      alt={item.title}
                       className="w-full h-full object-contain"
                     />
                   </div>
                   <div className="flex-grow">
                     <h3 className="text-xl font-bold text-gray-900">
-                      {item.name}
+                      {item.title}
                     </h3>
                     <p className="text-gray-600">{item.category}</p>
                     <p className="text-lg font-semibold text-blue-600">
