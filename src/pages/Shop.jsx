@@ -14,7 +14,7 @@ function Shop() {
   ];
 
   return (
-    <div className="py-16">
+    <div className="min-h-screen py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-14 text-center">
           <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-4">

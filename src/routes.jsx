@@ -8,7 +8,7 @@ const routes = [
     path: "/",
     element: <Layout />,
     children: [
-      { path: "/", element: <Home /> },
+      { index: true, element: <Home /> },
       { path: "/shop", element: <Shop /> },
       { path: "/cart", element: <Cart /> },
     ],
