@@ -9,7 +9,7 @@ function Home() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-6xl md:text-7xl font-extrabold mb-6 leading-tight">
-              Welcome to Our Store
+              Welcome to Octopus Store
             </h1>
             <p className="text-2xl md:text-3xl mb-10 text-blue-100 font-light">
               Discover amazing products at unbeatable prices

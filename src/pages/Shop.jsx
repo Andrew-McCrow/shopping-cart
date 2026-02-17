@@ -1,13 +1,64 @@
 import { useState } from "react";
-import { products } from "../products/products";
+import { productsOld, useProductsFakeStore } from "../products/products";
 import { useCart } from "../cart-context.jsx";
 
 function Shop() {
   const [quantities, setQuantities] = useState({});
   const { addToCart } = useCart();
+  const { products, loading, error } = useProductsFakeStore();
 
   // Helper functions for quantity management. Starts at 1 if not set, and ensures values stay between 1 and 99.
   const getQuantity = (productId) => quantities[productId] || 1;
+
+  // Render star rating based on rating value
+  const renderStars = (rating) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        // Full star
+        stars.push(
+          <svg
+            key={i}
+            className="w-5 h-5 fill-current text-yellow-400"
+            viewBox="0 0 20 20"
+          >
+            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+          </svg>,
+        );
+      } else if (i === fullStars && hasHalfStar) {
+        // Half star
+        stars.push(
+          <svg key={i} className="w-5 h-5 text-yellow-400" viewBox="0 0 20 20">
+            <defs>
+              <linearGradient id={`half-${i}`}>
+                <stop offset="50%" stopColor="currentColor" />
+                <stop offset="50%" stopColor="rgb(209, 213, 219)" />
+              </linearGradient>
+            </defs>
+            <path
+              fill={`url(#half-${i})`}
+              d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"
+            />
+          </svg>,
+        );
+      } else {
+        // Empty star
+        stars.push(
+          <svg
+            key={i}
+            className="w-5 h-5 fill-current text-gray-300"
+            viewBox="0 0 20 20"
+          >
+            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+          </svg>,
+        );
+      }
+    }
+    return stars;
+  };
   // Centralized function to update quantity (quantity is bounded between 1 and 99)
   const updateQuantity = (productId, newQuantity) => {
     if (newQuantity < 1) newQuantity = 1;
@@ -49,42 +100,32 @@ function Shop() {
               key={product.id}
               className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group border-2 border-gray-100 transform hover:-translate-y-2"
             >
-              <div className="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 h-64 flex items-center justify-center relative overflow-hidden">
-                <svg
-                  className="w-24 h-24 text-gray-400 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                  />
-                </svg>
+              <div className="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 h-64 flex items-center justify-center relative overflow-hidden p-6">
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="max-h-full max-w-full object-contain"
+                />
                 <span className="absolute top-4 right-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg">
                   {product.category}
                 </span>
               </div>
               <div className="p-7">
                 <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                  {product.name}
+                  {product.title}
                 </h3>
                 <div className="flex items-center justify-between mb-5">
                   <span className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
                     ${product.price.toFixed(2)}
                   </span>
-                  <div className="flex text-yellow-400">
-                    {[...Array(5)].map((_, i) => (
-                      <svg
-                        key={i}
-                        className="w-5 h-5 fill-current"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                      </svg>
-                    ))}
+                  <div className="text-right">
+                    <div className="flex justify-end mb-1">
+                      {renderStars(product.rating?.rate || 0)}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {product.rating?.rate?.toFixed(1) || "N/A"} (
+                      {product.rating?.count || 0} reviews)
+                    </div>
                   </div>
                 </div>
 

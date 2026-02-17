@@ -1,4 +1,4 @@
-export const products = [
+export const productsOld = [
   {
     id: 1,
     name: "Premium Headphones",
@@ -36,3 +36,32 @@ export const products = [
     category: "Accessories",
   },
 ];
+
+import { useState, useEffect } from "react";
+
+// Custom hook to fetch products from Fake Store API
+export const useProductsFakeStore = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("HTTP error " + response.status);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err);
+        setLoading(false);
+      });
+  }, []);
+
+  return { products, loading, error };
+};
