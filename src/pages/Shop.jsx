@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { products } from "../products/products";
+import { useCart } from "../cart-context.jsx";
 
 function Shop() {
   const [quantities, setQuantities] = useState({});
+  const { addToCart } = useCart();
 
   // Helper functions for quantity management. Starts at 1 if not set, and ensures values stay between 1 and 99.
   const getQuantity = (productId) => quantities[productId] || 1;
@@ -27,45 +30,6 @@ function Shop() {
     const numValue = parseInt(value) || 1;
     updateQuantity(productId, numValue);
   };
-
-  const products = [
-    {
-      id: 1,
-      name: "Premium Headphones",
-      price: 79.99,
-      category: "Electronics",
-    },
-    {
-      id: 2,
-      name: "Smart Watch",
-      price: 199.99,
-      category: "Electronics",
-    },
-    {
-      id: 3,
-      name: "Laptop Bag",
-      price: 49.99,
-      category: "Accessories",
-    },
-    {
-      id: 4,
-      name: "Wireless Mouse",
-      price: 29.99,
-      category: "Electronics",
-    },
-    {
-      id: 5,
-      name: "USB-C Hub",
-      price: 39.99,
-      category: "Accessories",
-    },
-    {
-      id: 6,
-      name: "Phone Case",
-      price: 19.99,
-      category: "Accessories",
-    },
-  ];
 
   return (
     <div className="min-h-screen py-16">
@@ -155,7 +119,10 @@ function Shop() {
                   </div>
                 </div>
 
-                <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                <button
+                  onClick={() => addToCart(product, getQuantity(product.id))}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
                   Add {getQuantity(product.id)} to Cart
                 </button>
               </div>
