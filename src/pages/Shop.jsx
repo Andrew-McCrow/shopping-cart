@@ -98,7 +98,7 @@ function Shop() {
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group border-2 border-gray-100 transform hover:-translate-y-2"
+              className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group border-2 border-gray-100 transform hover:-translate-y-2 flex flex-col h-full"
             >
               <div className="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 h-64 flex items-center justify-center relative overflow-hidden p-6">
                 <img
@@ -110,62 +110,66 @@ function Shop() {
                   {product.category}
                 </span>
               </div>
-              <div className="p-7">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                  {product.title}
-                </h3>
-                <div className="flex items-center justify-between mb-5">
-                  <span className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                    ${product.price.toFixed(2)}
-                  </span>
-                  <div className="text-right">
-                    <div className="flex justify-end mb-1">
-                      {renderStars(product.rating?.rate || 0)}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {product.rating?.rate?.toFixed(1) || "N/A"} (
-                      {product.rating?.count || 0} reviews)
+              <div className="p-7 flex flex-col flex-grow">
+                <div className="flex-grow">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                    {product.title}
+                  </h3>
+                  <div className="flex items-center justify-between mb-5">
+                    <span className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                      ${product.price.toFixed(2)}
+                    </span>
+                    <div className="text-right">
+                      <div className="flex justify-end mb-1">
+                        {renderStars(product.rating?.rate || 0)}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {product.rating?.rate?.toFixed(1) || "N/A"} (
+                        {product.rating?.count || 0} reviews)
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Quantity Controls */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Quantity
-                  </label>
-                  <div className="flex items-center justify-center gap-0 bg-gray-100 rounded-xl p-1 max-w-36 mx-auto">
-                    <button
-                      onClick={() => decrementQuantity(product.id)}
-                      className="w-10 h-10 flex items-center justify-center bg-white rounded-lg shadow-sm hover:bg-gray-50 transition-colors text-gray-600 hover:text-blue-600 font-bold text-xl"
-                    >
-                      −
-                    </button>
-                    <input
-                      type="number"
-                      min="1"
-                      max="99"
-                      value={getQuantity(product.id)}
-                      onChange={(e) =>
-                        handleQuantityInput(product.id, e.target.value)
-                      }
-                      className="w-14 h-10 text-center border-0 bg-transparent font-bold text-lg text-gray-900 focus:outline-none focus:ring-0"
-                    />
-                    <button
-                      onClick={() => incrementQuantity(product.id)}
-                      className="w-10 h-10 flex items-center justify-center bg-white rounded-lg shadow-sm hover:bg-gray-50 transition-colors text-gray-600 hover:text-blue-600 font-bold text-xl"
-                    >
-                      +
-                    </button>
+                {/* Quantity Controls and Add to Cart - Always at bottom */}
+                <div className="mt-auto">
+                  <div className="mb-6">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Quantity
+                    </label>
+                    <div className="flex items-center justify-center gap-0 bg-gray-100 rounded-xl p-1 max-w-36 mx-auto">
+                      <button
+                        onClick={() => decrementQuantity(product.id)}
+                        className="w-10 h-10 flex items-center justify-center bg-white rounded-lg shadow-sm hover:bg-gray-50 transition-colors text-gray-600 hover:text-blue-600 font-bold text-xl"
+                      >
+                        −
+                      </button>
+                      <input
+                        type="number"
+                        min="1"
+                        max="99"
+                        value={getQuantity(product.id)}
+                        onChange={(e) =>
+                          handleQuantityInput(product.id, e.target.value)
+                        }
+                        className="w-14 h-10 text-center border-0 bg-transparent font-bold text-lg text-gray-900 focus:outline-none focus:ring-0"
+                      />
+                      <button
+                        onClick={() => incrementQuantity(product.id)}
+                        className="w-10 h-10 flex items-center justify-center bg-white rounded-lg shadow-sm hover:bg-gray-50 transition-colors text-gray-600 hover:text-blue-600 font-bold text-xl"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
-                </div>
 
-                <button
-                  onClick={() => addToCart(product, getQuantity(product.id))}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-                >
-                  Add {getQuantity(product.id)} to Cart
-                </button>
+                  <button
+                    onClick={() => addToCart(product, getQuantity(product.id))}
+                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    Add {getQuantity(product.id)} to Cart
+                  </button>
+                </div>
               </div>
             </div>
           ))}
